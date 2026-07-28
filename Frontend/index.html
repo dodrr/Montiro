@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Montiro — магазин премиальных реплик часов в Казахстане. Rolex, Hublot, Tissot и другие." />
+  <title>Montiro — Премиальные реплики часов</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- PRELOADER -->
+  <div id="preloader" class="preloader" aria-hidden="true">
+    <div class="preloader__inner">
+      <div class="preloader__logo">MONTIRO</div>
+      <div class="preloader__line">
+        <div class="preloader__progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS -->
+  <div id="notifications" class="notifications" aria-live="polite"></div>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="header__container container">
+      <button class="header__burger" id="burgerBtn" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <a href="#" class="header__logo" aria-label="Montiro — на главную">
+        <span class="header__logo-text">MONTIRO</span>
+      </a>
+
+      <nav class="header__nav" id="mainNav" aria-label="Основная навигация">
+        <ul class="header__nav-list">
+          <li><a href="#catalog" class="header__nav-link">Каталог</a></li>
+          <li><a href="#brands" class="header__nav-link">Бренды</a></li>
+          <li><a href="#about" class="header__nav-link">О нас</a></li>
+          <li><a href="#faq" class="header__nav-link">FAQ</a></li>
+          <li><a href="#contact" class="header__nav-link">Контакты</a></li>
+        </ul>
+      </nav>
+
+      <div class="header__actions">
+        <button class="header__action-btn" id="searchToggleBtn" aria-label="Поиск" title="Поиск">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+
+        <button class="header__action-btn" id="favoritesBtn" aria-label="Избранное" title="Избранное">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="header__badge" id="favoritesBadge" hidden>0</span>
+        </button>
+
+        <button class="header__action-btn header__cart-btn" id="cartBtn" aria-label="Подборка" title="Подборка">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="header__badge" id="cartBadge" hidden>0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar" id="searchBar" hidden>
+      <div class="container">
+        <div class="search-bar__inner">
+          <input
+            type="search"
+            class="search-bar__input"
+            id="searchInput"
+            placeholder="Поиск часов, брендов..."
+            autocomplete="off"
+            aria-label="Поиск товаров"
+          />
+          <button class="search-bar__close" id="searchCloseBtn" aria-label="Закрыть поиск">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+    <nav aria-label="Мобильная навигация">
+      <ul class="mobile-nav__list">
+        <li><a href="#catalog" class="mobile-nav__link">Каталог</a></li>
+        <li><a href="#brands" class="mobile-nav__link">Бренды</a></li>
+        <li><a href="#about" class="mobile-nav__link">О нас</a></li>
+        <li><a href="#faq" class="mobile-nav__link">FAQ</a></li>
+        <li><a href="#contact" class="mobile-nav__link">Контакты</a></li>
+      </ul>
+      <div class="mobile-nav__footer">
+        <a href="https://t.me/montiro_watches" target="_blank" rel="noopener" class="mobile-nav__telegram">Telegram: @montiro_watches</a>
+      </div>
+    </nav>
+  </div>
+  <div class="overlay" id="overlay"></div>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" aria-label="Главный баннер">
+      <div class="hero__bg">
+        <div class="hero__bg-circle hero__bg-circle--1"></div>
+        <div class="hero__bg-circle hero__bg-circle--2"></div>
+      </div>
+      <div class="hero__content container">
+        <p class="hero__eyebrow">Магазин премиальных реплик · Петропавловск</p>
+        <h1 class="hero__title">Rolex. Hublot.<br /><em>Твоя цена.</em></h1>
+        <p class="hero__subtitle">Montiro — мы только открылись, но уже знаем: каждый заслуживает носить легенду. Точные реплики Rolex, Hublot, Tissot, Patek и других культовых брендов.</p>
+        <div class="hero__actions">
+          <a href="#catalog" class="btn btn--gold">Смотреть каталог</a>
+          <a href="#catalog" class="btn btn--ghost">Купить</a>
+        </div>
+
+        <!-- Гарантии/УТП блок -->
+        <div class="hero__perks" id="heroPerks">
+          <div class="hero__perk">
+            <span class="hero__perk-icon">✓</span>
+            <span>Оплата после проверки фото</span>
+          </div>
+          <div class="hero__perk">
+            <span class="hero__perk-icon">⏱</span>
+            <span>Доставка 1–2 дня по Петропавловску</span>
+          </div>
+          <div class="hero__perk">
+            <span class="hero__perk-icon">⛨</span>
+            <span>Гарантия 3 месяца</span>
+          </div>
+        </div>
+
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <strong>14</strong><span>моделей</span>
+          </div>
+          <div class="hero__stat-divider"></div>
+          <div class="hero__stat">
+            <strong>9</strong><span>брендов</span>
+          </div>
+          <div class="hero__stat-divider"></div>
+          <div class="hero__stat">
+            <strong>2026</strong><span>открытие</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero__watch-showcase" aria-hidden="true">
+        <div class="hero__watch-ring hero__watch-ring--outer"></div>
+        <div class="hero__watch-ring hero__watch-ring--inner"></div>
+        <div class="hero__watch-face">
+          <div class="hero__watch-dial"></div>
+          <div class="hero__watch-hand hero__watch-hand--hour" id="watchHourHand"></div>
+          <div class="hero__watch-hand hero__watch-hand--minute" id="watchMinuteHand"></div>
+          <div class="hero__watch-hand hero__watch-hand--second" id="watchSecondHand"></div>
+          <div class="hero__watch-center"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CATALOG -->
+    <section class="catalog" id="catalog">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-header__eyebrow">Наш выбор</p>
+          <h2 class="section-header__title">Каталог часов</h2>
+        </header>
+
+        <!-- FILTERS -->
+        <div class="filters" id="filters">
+          <div class="filters__row">
+            <div class="filters__group">
+              <label class="filters__label" for="filterCategory">Категория</label>
+              <select class="filters__select" id="filterCategory" aria-label="Фильтр по категории">
+                <option value="">Все категории</option>
+                <option value="Luxury">Luxury</option>
+                <option value="Sport">Sport</option>
+                <option value="Classic">Classic</option>
+              </select>
+            </div>
+
+            <div class="filters__group">
+              <label class="filters__label" for="filterBrand">Бренд</label>
+              <select class="filters__select" id="filterBrand" aria-label="Фильтр по бренду">
+                <option value="">Все бренды</option>
+              </select>
+            </div>
+
+            <div class="filters__group">
+              <label class="filters__label" for="filterSort">Сортировка</label>
+              <select class="filters__select" id="filterSort" aria-label="Сортировка">
+                <option value="default">По умолчанию</option>
+                <option value="rating">По рейтингу</option>
+                <option value="name">По названию</option>
+              </select>
+            </div>
+
+            <button class="btn btn--outline filters__reset" id="resetFilters">Сбросить</button>
+          </div>
+
+          <div class="filters__results" id="filtersResults">
+            Показано: <strong id="resultsCount">0</strong> товаров
+          </div>
+        </div>
+
+        <!-- PRODUCT GRID -->
+        <div class="catalog__grid" id="catalogGrid" aria-label="Список товаров">
+          <!-- Cards injected by JS -->
+        </div>
+
+        <div class="catalog__empty" id="catalogEmpty" hidden>
+          <p>По вашему запросу ничего не найдено.</p>
+          <button class="btn btn--gold" id="resetFromEmpty">Сбросить фильтры</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRANDS STRIP -->
+    <section class="brands" id="brands" aria-label="Бренды">
+      <div class="container">
+        <p class="brands__label">Бренды в наличии</p>
+        <div class="brands__marquee">
+          <div class="brands__track" id="brandsTrack">
+            <!-- filled by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <div class="container about__grid">
+        <div class="about__content">
+          <p class="section-header__eyebrow">Наша история</p>
+          <h2 class="about__title">Только открылись,<br />уже влюблены в часы</h2>
+          <p class="about__text">Montiro — молодой магазин реплик премиальных часов. Мы начинали с простого: хотели носить Rolex и Hublot, но не платить оригинальные цены. Нашли лучших поставщиков — и решили поделиться с другими.</p>
+          <p class="about__text">Пока у нас немного покупателей, но каждый из них получает внимание и честный подход. Мы только в начале пути — и это круто.</p>
+          <a href="#catalog" class="btn btn--gold">Купить</a>
+        </div>
+        <div class="about__pillars">
+          <div class="about__pillar">
+            <span class="about__pillar-icon">⧖</span>
+            <h3>Точная копия</h3>
+            <p>Реплики высшего класса — от внешнего вида до веса и деталей</p>
+          </div>
+          <div class="about__pillar">
+            <span class="about__pillar-icon">◈</span>
+            <h3>Честно</h3>
+            <p>Продаём реплики, не выдавая их за оригинал — всё прозрачно</p>
+          </div>
+          <div class="about__pillar">
+            <span class="about__pillar-icon">✦</span>
+            <h3>Лучшие бренды</h3>
+            <p>Rolex, Hublot, Tissot, Omega, Patek и другие иконы</p>
+          </div>
+          <div class="about__pillar">
+            <span class="about__pillar-icon">⬡</span>
+            <h3>Доставка</h3>
+            <p>Отправляем по Казахстану и СНГ быстро и надёжно</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+    <!-- FAQ -->
+    <section class="faq" id="faq">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-header__eyebrow">Вопросы и ответы</p>
+          <h2 class="section-header__title">FAQ</h2>
+        </header>
+        <div class="faq__list">
+
+          <div class="faq__item">
+            <button class="faq__question" aria-expanded="false">
+              Что такое реплика часов?
+              <span class="faq__icon">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Реплика — это точная копия дизайна оригинальных часов: тот же корпус, циферблат, браслет. Мы не продаём оригиналы и честно об этом говорим. Наши часы выглядят как Rolex или Hublot, но стоят в разы дешевле. Идеально для тех, кто хочет стиль без переплаты.</p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__question" aria-expanded="false">
+              Как оплатить заказ?
+              <span class="faq__icon">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Оплата происходит через Telegram с нашим менеджером. Принимаем перевод на Kaspi, наличные при получении (по Петропавловску), а также переводы на карту. Менеджер уточнит удобный способ при оформлении.</p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__question" aria-expanded="false">
+              Как быстро доставите?
+              <span class="faq__icon">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>По Петропавловску — в течение 1–2 дней, можем договориться о встрече. По Казахстану — отправляем Казпочтой или курьерской службой, срок 3–7 дней. По СНГ — уточняйте у менеджера. Стоимость доставки обсуждается индивидуально.</p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__question" aria-expanded="false">
+              Есть ли гарантия?
+              <span class="faq__icon">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Да, на все часы действует гарантия 3 месяца. Если перестанут идти или сломается механизм — обращайтесь, разберёмся. Мы работаем честно и дорожим репутацией.</p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__question" aria-expanded="false">
+              Можно ли вернуть часы?
+              <span class="faq__icon">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Да, в течение 7 дней с момента получения, если товар не подошёл и не был в использовании. Напишите нам в Telegram — разберёмся индивидуально.</p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__question" aria-expanded="false">
+              Как выбрать часы?
+              <span class="faq__icon">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Напишите нам в Telegram — расскажите для кого (себе или в подарок), какой стиль нравится, какой бюджет. Менеджер подберёт лучший вариант и пришлёт фото реального товара перед отправкой.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contact">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <p class="footer__logo">MONTIRO</p>
+        <p class="footer__tagline">Реплики премиум-класса · Открылись в 2026</p>
+        <div class="footer__socials">
+          <a href="https://t.me/montiro_watches" target="_blank" rel="noopener" class="footer__social" aria-label="Telegram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </a>
+          <a href="https://www.instagram.com/montiro.store/" target="_blank" rel="noopener" class="footer__social" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://wa.me/87059126313" target="_blank" rel="noopener" class="footer__social" aria-label="WhatsApp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__heading">Каталог</h4>
+        <ul class="footer__links">
+          <li><a href="#catalog">Все модели</a></li>
+          <li><a href="#catalog">Luxury</a></li>
+          <li><a href="#catalog">Sport</a></li>
+          <li><a href="#catalog">Classic</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__heading">Компания</h4>
+        <ul class="footer__links">
+          <li><a href="#about">О нас</a></li>
+          <li><a href="#">Гарантия</a></li>
+          <li><a href="#">Доставка</a></li>
+          <li><a href="#">Возврат</a></li>
+          <li><a href="#">Сертификаты</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__heading">Контакты</h4>
+        <address class="footer__address">
+          <p>Казахстан, онлайн-магазин</p>
+          <a href="https://t.me/montiro_watches" target="_blank" rel="noopener">Telegram: @montiro_watches</a>
+        </address>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <p>© 2026 Montiro. Магазин реплик премиальных часов.</p>
+        <p>Все представленные товары являются репликами и не являются оригинальной продукцией брендов</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- PRODUCT MODAL -->
+  <div class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="modalProductName" hidden>
+    <div class="modal__backdrop" id="modalBackdrop"></div>
+    <div class="modal__content">
+      <button class="modal__close" id="modalClose" aria-label="Закрыть">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="modal__grid">
+        <div class="modal__image-col">
+          <div class="modal__image-wrap">
+            <div class="modal__image-bg" id="modalImageBg"></div>
+            <div class="modal__badge-category" id="modalCategory"></div>
+            <div class="modal__badge-stock" id="modalStockBadge"></div>
+          </div>
+          <!-- Галерея миниатюр -->
+          <div class="modal__thumbs" id="modalThumbs"></div>
+        </div>
+        <div class="modal__details">
+          <p class="modal__brand" id="modalBrand"></p>
+          <h2 class="modal__name" id="modalProductName"></h2>
+          <div class="modal__rating" id="modalRating"></div>
+          <p class="modal__price" id="modalPrice">???</p>
+          <p class="modal__stock-left" id="modalStockLeft" hidden></p>
+          <p class="modal__description" id="modalDescription"></p>
+
+          <dl class="modal__specs" id="modalSpecs"></dl>
+
+          <div class="modal__actions">
+            <div class="modal__qty">
+              <button class="modal__qty-btn" id="modalQtyMinus" aria-label="Уменьшить">−</button>
+              <span class="modal__qty-val" id="modalQtyVal">1</span>
+              <button class="modal__qty-btn" id="modalQtyPlus" aria-label="Увеличить">+</button>
+            </div>
+            <button class="btn btn--gold modal__add-cart" id="modalAddCart">В подборку</button>
+            <button class="btn btn--outline modal__buy-btn" id="modalBuyBtn">Купить</button>
+            <button class="modal__fav-btn" id="modalFavBtn" aria-label="В избранное">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART DRAWER -->
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Подборка" aria-hidden="true">
+    <div class="cart-drawer__header">
+      <h2 class="cart-drawer__title">Ваша подборка</h2>
+      <button class="cart-drawer__close" id="cartClose" aria-label="Закрыть подборку">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cart-drawer__body" id="cartBody">
+      <!-- Cart items injected by JS -->
+    </div>
+    <div class="cart-drawer__footer" id="cartFooter" hidden>
+      <button class="btn btn--gold cart-drawer__checkout">Написать в Telegram</button>
+      <p class="cart-drawer__note">Менеджер ответит в Telegram, уточнит детали и примет оплату</p>
+    </div>
+  </aside>
+
+  <!-- FAVORITES DRAWER -->
+  <aside class="cart-drawer favorites-drawer" id="favoritesDrawer" aria-label="Избранное" aria-hidden="true">
+    <div class="cart-drawer__header">
+      <h2 class="cart-drawer__title">Избранное</h2>
+      <button class="cart-drawer__close" id="favoritesClose" aria-label="Закрыть избранное">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cart-drawer__body" id="favoritesBody">
+      <!-- Favorites injected by JS -->
+    </div>
+  </aside>
+
+  <!-- TELEGRAM CONFIRM MODAL -->
+  <div class="confirm-modal" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle" hidden>
+    <div class="confirm-modal__backdrop" id="confirmModalBackdrop"></div>
+    <div class="confirm-modal__box">
+      <h3 class="confirm-modal__title" id="confirmModalTitle">Переход в Telegram</h3>
+      <p class="confirm-modal__text" id="confirmModalText">
+        Покупка и уточнение деталей (цена, оплата, доставка) происходят через Telegram с нашим менеджером. Перейти?
+      </p>
+      <div class="confirm-modal__actions">
+        <button class="btn btn--ghost" id="confirmModalCancel">Нет</button>
+        <button class="btn btn--gold" id="confirmModalOk">Да, перейти</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY MOBILE TELEGRAM BAR -->
+  <div class="sticky-telegram" id="stickyTelegram">
+    <a href="https://t.me/montiro_watches" target="_blank" rel="noopener" class="sticky-telegram__btn" id="stickyTelegramBtn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Написать в Telegram
+    </a>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

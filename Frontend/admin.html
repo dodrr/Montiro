@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Montiro — Админка</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-box">
+      <h1>MONTIRO</h1>
+      <p>Панель администратора</p>
+      <input type="password" id="passwordInput" placeholder="Пароль" autocomplete="off" />
+      <button class="btn btn--full" id="loginBtn">Войти</button>
+      <p class="login-error" id="loginError"></p>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin" id="adminPanel">
+    <div class="admin__header">
+      <h1 class="admin__title">MONTIRO ADMIN</h1>
+      <div class="admin__actions">
+        <a href="index.html" target="_blank" class="btn--outline" style="display:inline-flex;align-items:center;text-decoration:none;">Открыть сайт</a>
+        <button class="btn--outline" id="logoutBtn">Выйти</button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="orders">Заказы</button>
+      <button class="tab" data-tab="products">Товары</button>
+    </div>
+
+    <!-- ORDERS TAB -->
+    <div class="tab-content active" id="tab-orders">
+      <div class="stats" id="stats"></div>
+      <div class="admin__actions" style="margin-bottom:16px;">
+        <button class="btn--outline" id="refreshOrdersBtn">Обновить</button>
+      </div>
+      <div class="orders-table" id="ordersTable"></div>
+    </div>
+
+    <!-- PRODUCTS TAB -->
+    <div class="tab-content" id="tab-products">
+      <button class="btn add-product-btn" id="addProductBtn">+ Добавить товар</button>
+      <div class="products-table" id="productsTable"></div>
+    </div>
+  </div>
+
+  <!-- PRODUCT FORM MODAL -->
+  <div class="modal-overlay" id="productModalOverlay">
+    <div class="modal-box">
+      <h2 id="productModalTitle">Новый товар</h2>
+      <form id="productForm">
+
+        <!-- Основное -->
+        <div class="form-section-label">Основное</div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="f_brand">Бренд</label>
+            <input type="text" id="f_brand" required placeholder="Rolex" />
+          </div>
+          <div class="form-field">
+            <label for="f_name">Модель</label>
+            <input type="text" id="f_name" required placeholder="Submariner Date" />
+          </div>
+          <div class="form-field">
+            <label for="f_collection">Коллекция</label>
+            <input type="text" id="f_collection" placeholder="Submariner" />
+          </div>
+          <div class="form-field">
+            <label for="f_category">Категория</label>
+            <select id="f_category">
+              <option value="Luxury">Luxury</option>
+              <option value="Sport">Sport</option>
+              <option value="Classic">Classic</option>
+              <option value="Smart">Smart</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="f_price">Цена (₸)</label>
+            <input type="number" id="f_price" min="0" step="1" placeholder="Оставь пустым — будет ???" />
+          </div>
+          <div class="form-field">
+            <label for="f_rating">Рейтинг (0–5)</label>
+            <input type="number" id="f_rating" min="0" max="5" step="0.1" placeholder="4.8" />
+          </div>
+        </div>
+
+        <!-- Наличие -->
+        <div class="form-section-label">Наличие</div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="f_in_stock">Статус</label>
+            <select id="f_in_stock">
+              <option value="true">В наличии</option>
+              <option value="false">Под заказ</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="f_stock_left">Осталось штук (необязательно)</label>
+            <input type="number" id="f_stock_left" min="0" step="1" placeholder="Оставь пустым, если не важно" />
+          </div>
+        </div>
+        <p class="form-hint" style="margin-top:-8px;margin-bottom:16px;">
+          Если указать число ≤ 5 — на сайте появится плашка «Осталось всего N шт.»
+        </p>
+
+        <!-- Характеристики -->
+        <div class="form-section-label">Характеристики</div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="f_mechanism">Механизм</label>
+            <input type="text" id="f_mechanism" placeholder="Автоматический" />
+          </div>
+          <div class="form-field">
+            <label for="f_case_material">Материал корпуса</label>
+            <input type="text" id="f_case_material" placeholder="Сталь 316L" />
+          </div>
+          <div class="form-field">
+            <label for="f_strap_material">Материал ремешка</label>
+            <input type="text" id="f_strap_material" placeholder="Кожа / Сталь" />
+          </div>
+        </div>
+
+        <!-- Описание -->
+        <div class="form-section-label">Описание</div>
+        <div class="form-field" style="margin-bottom:16px;">
+          <label for="f_description">Описание</label>
+          <textarea id="f_description" rows="4" placeholder="Расскажите о часах — история модели, особенности, на кого рассчитаны..."></textarea>
+        </div>
+
+        <!-- Фото и видео -->
+        <div class="form-section-label">Фото и видео</div>
+        <div class="form-field" style="margin-bottom:16px;">
+          <label for="f_image">Главное фото (URL или путь к файлу)</label>
+          <input type="text" id="f_image" placeholder="images/rolex-submariner.jpg" />
+        </div>
+
+        <div class="form-field" style="margin-bottom:8px;">
+          <label>Дополнительные фото (галерея)</label>
+        </div>
+        <div class="images-list" id="imagesList"></div>
+        <button type="button" class="btn--outline btn--small" id="addImageBtn" style="margin-bottom:20px;">+ Добавить фото</button>
+
+        <div class="form-field" style="margin-bottom:24px;">
+          <label for="f_video">Видео/GIF товара (URL, необязательно)</label>
+          <input type="text" id="f_video" placeholder="videos/rolex-360.mp4" />
+          <p class="form-hint">Если указано — в модалке на сайте вместо фото будет проигрываться это видео по кругу</p>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn--outline" id="cancelProductBtn">Отмена</button>
+          <button type="submit" class="btn" id="saveProductBtn">Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "http://127.0.0.1:8000";
+    const TOKEN_KEY = "montiro_admin_token";
+
+    function getToken() { return localStorage.getItem(TOKEN_KEY); }
+    function authHeaders() {
+      return { "Content-Type": "application/json", "Authorization": `Bearer ${getToken()}` };
+    }
+    function formatPrice(price) {
+      if (!price || price === 0) return '???';
+      return Number(price).toLocaleString('ru-RU') + ' ₸';
+    }
+
+    /* ── AUTH ─────────────────────────────────────────── */
+    function showLogin() {
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('adminPanel').classList.remove('visible');
+    }
+    function showAdmin() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').classList.add('visible');
+      loadOrders();
+      loadProducts();
+    }
+    function logout() { localStorage.removeItem(TOKEN_KEY); showLogin(); }
+
+    document.getElementById('loginBtn').addEventListener('click', attemptLogin);
+    document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') attemptLogin(); });
+    document.getElementById('logoutBtn').addEventListener('click', logout);
+
+    async function attemptLogin() {
+      const input = document.getElementById('passwordInput');
+      const error = document.getElementById('loginError');
+      try {
+        const r = await fetch(`${API_URL}/admin/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: input.value })
+        });
+        if (r.ok) {
+          const data = await r.json();
+          localStorage.setItem(TOKEN_KEY, data.token);
+          error.textContent = '';
+          input.value = '';
+          showAdmin();
+        } else {
+          error.textContent = 'Неверный пароль';
+        }
+      } catch (e) {
+        error.textContent = 'Ошибка подключения к серверу';
+      }
+    }
+
+    /* ── TABS ─────────────────────────────────────────── */
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    /* ── ORDERS ───────────────────────────────────────── */
+    async function loadOrders() {
+      try {
+        const r = await fetch(`${API_URL}/order`, { headers: authHeaders() });
+        renderOrders(await r.json());
+      } catch (e) {
+        document.getElementById('ordersTable').innerHTML = '<div class="empty-state">Ошибка загрузки заказов</div>';
+      }
+    }
+
+    function renderOrders(orders) {
+      document.getElementById('stats').innerHTML = `
+        <div class="stat-card"><strong>${orders.length}</strong><span>Всего заявок</span></div>`;
+      const table = document.getElementById('ordersTable');
+      if (!orders.length) { table.innerHTML = '<div class="empty-state">Пока нет заявок.</div>'; return; }
+      table.innerHTML = `
+        <div class="order-row header"><div>Часы</div><div>Покупатель</div><div>Цена</div><div>Действие</div></div>
+        ${orders.map(o => `
+        <div class="order-row" data-id="${o.id}">
+          <div>${o.watch}</div>
+          <div>${o.customer}</div>
+          <div class="order-row__price">${formatPrice(o.price)}</div>
+          <div><button class="row__remove" data-remove-order-id="${o.id}">Удалить</button></div>
+        </div>`).join('')}`;
+    }
+
+    document.getElementById('ordersTable').addEventListener('click', async e => {
+      const btn = e.target.closest('[data-remove-order-id]');
+      if (!btn || !confirm('Удалить этот заказ?')) return;
+      await fetch(`${API_URL}/order/${btn.dataset.removeOrderId}`, { method: 'DELETE', headers: authHeaders() });
+      loadOrders();
+    });
+    document.getElementById('refreshOrdersBtn').addEventListener('click', loadOrders);
+
+    /* ── PRODUCTS ─────────────────────────────────────── */
+    async function loadProducts() {
+      try {
+        const r = await fetch(`${API_URL}/product`);
+        renderProducts(await r.json());
+      } catch (e) {
+        document.getElementById('productsTable').innerHTML = '<div class="empty-state">Ошибка загрузки товаров</div>';
+      }
+    }
+
+    function renderProducts(products) {
+      const table = document.getElementById('productsTable');
+      if (!products.length) { table.innerHTML = '<div class="empty-state">Каталог пуст. Добавьте первый товар.</div>'; return; }
+      table.innerHTML = `
+        <div class="product-row header">
+          <div>Модель</div><div>Бренд</div><div>Категория</div><div>Наличие</div><div>Цена</div><div>Действия</div>
+        </div>
+        ${products.map(p => `
+        <div class="product-row" data-id="${p.id}">
+          <div class="product-row__name">${p.name}</div>
+          <div class="product-row__brand">${p.brand}</div>
+          <div>${p.category}</div>
+          <div>${p.in_stock === false ? '<span class="stock-tag stock-tag--out">Под заказ</span>' : '<span class="stock-tag stock-tag--in">В наличии</span>'}</div>
+          <div class="product-row__price">${formatPrice(p.price)}</div>
+          <div class="product-row__actions">
+            <button class="btn--outline btn--small" data-edit-id="${p.id}">Изменить</button>
+            <button class="row__remove" data-remove-product-id="${p.id}">Удалить</button>
+          </div>
+        </div>`).join('')}`;
+    }
+
+    document.getElementById('productsTable').addEventListener('click', async e => {
+      const editBtn   = e.target.closest('[data-edit-id]');
+      const removeBtn = e.target.closest('[data-remove-product-id]');
+      if (editBtn) {
+        const r = await fetch(`${API_URL}/product/${editBtn.dataset.editId}`);
+        openProductForm(await r.json());
+      }
+      if (removeBtn && confirm('Удалить этот товар?')) {
+        await fetch(`${API_URL}/product/${removeBtn.dataset.removeProductId}`, { method: 'DELETE', headers: authHeaders() });
+        loadProducts();
+      }
+    });
+
+    /* ── PRODUCT FORM ─────────────────────────────────── */
+    const overlay = document.getElementById('productModalOverlay');
+    const form    = document.getElementById('productForm');
+    let editingProductId = null;
+    let currentImages = []; /* список доп. фото (галерея) в текущей форме */
+
+    /* поля формы */
+    const F = id => document.getElementById(id);
+
+    document.getElementById('addProductBtn').addEventListener('click', () => openProductForm(null));
+    document.getElementById('cancelProductBtn').addEventListener('click', closeProductForm);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeProductForm(); });
+
+    /* ── Динамический список доп. фото ─────────────────── */
+    function renderImagesList() {
+      const listEl = document.getElementById('imagesList');
+      if (!currentImages.length) {
+        listEl.innerHTML = '';
+        return;
+      }
+      listEl.innerHTML = currentImages.map((url, i) => `
+        <div class="specs-row" data-image-index="${i}">
+          <input type="text" class="image-url-input" data-image-input="${i}" placeholder="images/rolex-side.jpg" value="${url.replace(/"/g, '&quot;')}" style="grid-column: 1 / 3;" />
+          <button type="button" class="specs-row__remove" data-remove-image="${i}">×</button>
+        </div>`).join('');
+    }
+
+    document.getElementById('addImageBtn').addEventListener('click', () => {
+      currentImages.push('');
+      renderImagesList();
+    });
+
+    document.getElementById('imagesList').addEventListener('click', e => {
+      const removeBtn = e.target.closest('[data-remove-image]');
+      if (!removeBtn) return;
+      currentImages.splice(Number(removeBtn.dataset.removeImage), 1);
+      renderImagesList();
+    });
+
+    document.getElementById('imagesList').addEventListener('input', e => {
+      const input = e.target.closest('[data-image-input]');
+      if (!input) return;
+      currentImages[Number(input.dataset.imageInput)] = input.value;
+    });
+
+    function openProductForm(p) {
+      editingProductId = p ? p.id : null;
+      F('productModalTitle').textContent = p ? 'Редактировать товар' : 'Новый товар';
+
+      /* основное */
+      F('f_brand').value      = p?.brand      || '';
+      F('f_name').value       = p?.name       || '';
+      F('f_collection').value = p?.collection || '';
+      F('f_category').value   = p?.category   || 'Luxury';
+      F('f_price').value      = (p?.price && p.price !== 0) ? p.price : '';
+      F('f_rating').value     = p?.rating     || '';
+
+      /* наличие */
+      F('f_in_stock').value   = (p?.in_stock === false) ? 'false' : 'true';
+      F('f_stock_left').value = (p?.stock_left !== null && p?.stock_left !== undefined) ? p.stock_left : '';
+
+      /* характеристики */
+      F('f_mechanism').value       = p?.mechanism        || '';
+      F('f_case_material').value   = p?.case_material    || '';
+      F('f_strap_material').value  = p?.strap_material   || '';
+
+      /* описание и фото */
+      F('f_description').value = p?.description || '';
+      F('f_image').value       = p?.image       || '';
+      F('f_video').value       = p?.video       || '';
+
+      /* галерея доп. фото */
+      currentImages = Array.isArray(p?.images) ? [...p.images] : [];
+      renderImagesList();
+
+      overlay.classList.add('visible');
+    }
+
+    function closeProductForm() {
+      overlay.classList.remove('visible');
+      editingProductId = null;
+      currentImages = [];
+      renderImagesList();
+      form.reset();
+    }
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      /* убираем пустые строки из галереи перед отправкой */
+      const cleanImages = currentImages.map(v => v.trim()).filter(Boolean);
+
+      const body = JSON.stringify({
+        brand:            F('f_brand').value.trim(),
+        name:             F('f_name').value.trim(),
+        collection:       F('f_collection').value.trim(),
+        category:         F('f_category').value,
+        price:            F('f_price').value === '' ? 0 : Number(F('f_price').value),
+        rating:           F('f_rating').value === '' ? 0 : Number(F('f_rating').value),
+        in_stock:         F('f_in_stock').value === 'true',
+        stock_left:       F('f_stock_left').value === '' ? null : Number(F('f_stock_left').value),
+        mechanism:        F('f_mechanism').value.trim(),
+        case_material:    F('f_case_material').value.trim(),
+        strap_material:   F('f_strap_material').value.trim(),
+        description:      F('f_description').value.trim(),
+        image:            F('f_image').value.trim(),
+        images:           cleanImages,
+        video:            F('f_video').value.trim(),
+      });
+
+      const url    = editingProductId ? `${API_URL}/product/${editingProductId}` : `${API_URL}/product`;
+      const method = editingProductId ? 'PUT' : 'POST';
+
+      await fetch(url, { method, headers: authHeaders(), body });
+      closeProductForm();
+      loadProducts();
+    });
+
+    /* ── INIT ─────────────────────────────────────────── */
+    if (getToken()) showAdmin(); else showLogin();
+  </script>
+</body>
+</html>
