@@ -109,7 +109,7 @@
 
   /* ── STATE ─────────────────────────────────────────────── */
   const state = {
-    filters: { category: '', brand: '', sort: 'default', search: '' },
+    filters: { category: '', brand: '', sort: 'default', search: '', maxPrice: null },
     cart: {},
     favorites: new Set(),
     modalProductId: null
@@ -301,13 +301,20 @@
       state.filters.sort = e.target.value;
       renderCatalog();
     });
+    $('#filterMaxPrice').addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      /* пусто = без ограничения по цене */
+      state.filters.maxPrice = val === '' ? null : Number(val);
+      renderCatalog();
+    });
 
     const resetAll = () => {
-      state.filters = { category: '', brand: '', sort: 'default', search: '' };
+      state.filters = { category: '', brand: '', sort: 'default', search: '', maxPrice: null };
       $('#filterCategory').value = '';
       $('#filterBrand').value    = '';
       $('#filterSort').value     = 'default';
       $('#searchInput').value    = '';
+      $('#filterMaxPrice').value = '';
       renderCatalog();
     };
     $('#resetFilters').addEventListener('click', resetAll);
@@ -332,6 +339,10 @@
       if (state.filters.search) {
         const q = state.filters.search;
         if (!`${p.brand} ${p.name} ${p.category}`.toLowerCase().includes(q)) return false;
+      }
+      /* Фильтр по цене — товары без цены (???) всегда показываем, раз их не с чем сравнивать */
+      if (state.filters.maxPrice !== null && state.filters.maxPrice !== undefined && !Number.isNaN(state.filters.maxPrice) && p.price) {
+        if (Number(p.price) > state.filters.maxPrice) return false;
       }
       return true;
     });

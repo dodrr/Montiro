@@ -565,6 +565,27 @@ address { font-style: normal; }
 }
 .filters__range::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
+/* Ручной ввод цены "до" */
+.filters__price-input {
+  background: var(--black);
+  border: 1px solid var(--gray-dark);
+  color: var(--white);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body); font-size: 0.875rem;
+  outline: none;
+  width: 100%;
+  transition: border-color var(--transition);
+}
+.filters__price-input::placeholder { color: var(--gray-mid); }
+.filters__price-input:focus { border-color: var(--gold); }
+/* убираем стрелки у number input */
+.filters__price-input::-webkit-outer-spin-button,
+.filters__price-input::-webkit-inner-spin-button {
+  -webkit-appearance: none; margin: 0;
+}
+.filters__price-input[type="number"] { -moz-appearance: textfield; }
+
 .filters__results {
   margin-top: 20px;
   font-size: 0.8rem; color: var(--gray-mid);
