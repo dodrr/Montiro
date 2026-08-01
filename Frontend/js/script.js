@@ -6,7 +6,7 @@
 (() => {
   'use strict';
 
-  const API_URL = 'http://127.0.0.1:8000';
+  const API_URL = 'https://montiro.onrender.com';
 
   /* ── DEFAULT PRODUCTS (fallback если backend недоступен) ── */
   const DEFAULT_PRODUCTS = [
