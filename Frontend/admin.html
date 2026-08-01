@@ -229,6 +229,15 @@
     });
 
     /* ── ORDERS ───────────────────────────────────────── */
+    const ORDER_STATUSES = ["Новый", "В работе", "Оплачен", "Отправлен"];
+
+    function formatDate(isoString) {
+      if (!isoString) return '—';
+      const d = new Date(isoString);
+      if (isNaN(d.getTime())) return '—';
+      return d.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
     async function loadOrders() {
       try {
         const r = await fetch(`${API_URL}/order`, { headers: authHeaders() });
@@ -244,12 +253,18 @@
       const table = document.getElementById('ordersTable');
       if (!orders.length) { table.innerHTML = '<div class="empty-state">Пока нет заявок.</div>'; return; }
       table.innerHTML = `
-        <div class="order-row header"><div>Часы</div><div>Покупатель</div><div>Цена</div><div>Действие</div></div>
+        <div class="order-row header"><div>Часы</div><div>Покупатель</div><div>Цена</div><div>Дата</div><div>Статус</div><div>Действие</div></div>
         ${orders.map(o => `
         <div class="order-row" data-id="${o.id}">
           <div>${o.watch}</div>
           <div>${o.customer}</div>
           <div class="order-row__price">${formatPrice(o.price)}</div>
+          <div class="order-row__date">${formatDate(o.created_at)}</div>
+          <div>
+            <select data-order-status="${o.id}">
+              ${ORDER_STATUSES.map(s => `<option value="${s}" ${s === o.status ? 'selected' : ''}>${s}</option>`).join('')}
+            </select>
+          </div>
           <div><button class="row__remove" data-remove-order-id="${o.id}">Удалить</button></div>
         </div>`).join('')}`;
     }
@@ -260,6 +275,18 @@
       await fetch(`${API_URL}/order/${btn.dataset.removeOrderId}`, { method: 'DELETE', headers: authHeaders() });
       loadOrders();
     });
+
+    document.getElementById('ordersTable').addEventListener('change', async e => {
+      const select = e.target.closest('[data-order-status]');
+      if (!select) return;
+      await fetch(`${API_URL}/order/${select.dataset.orderStatus}/status`, {
+        method: 'PATCH',
+        headers: authHeaders(),
+        body: JSON.stringify({ status: select.value })
+      });
+      /* стат-карточку не трогаем, просто подтверждаем визуально что сохранилось */
+    });
+
     document.getElementById('refreshOrdersBtn').addEventListener('click', loadOrders);
 
     /* ── PRODUCTS ─────────────────────────────────────── */

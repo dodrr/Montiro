@@ -23,5 +23,8 @@ class OrderSchema(BaseModel):
     customer:str 
     price:int
 
+class OrderStatusUpdate(BaseModel):
+    status: str
+    
 class AdminLogin(BaseModel):
     password: str

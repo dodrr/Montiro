@@ -1,4 +1,5 @@
-from sqlalchemy import Column,Text, String, Float, Integer, Boolean
+from sqlalchemy import Column,Text, String, Float, Integer, Boolean, DateTime
+from datetime import datetime
 from database import Base
 
 class Products(Base):
@@ -29,7 +30,8 @@ class Orders(Base):
     watch = Column(String(100))
     customer = Column(String(100))
     price = Column(Integer)
-
+    status = Column(String(50), default="Новый")
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 class Admin(Base):
     __tablename__ = "admins"

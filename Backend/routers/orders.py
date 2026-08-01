@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from models import Orders
 from dependencies import get_current_admin, get_db
-from schemas import OrderSchema
+from schemas import OrderSchema, OrderStatusUpdate
 
 router = APIRouter()
 
@@ -22,10 +22,10 @@ def create_order(order: OrderSchema, db: Session = Depends(get_db)):
 
 @router.get("/order")
 def get_order(db: Session = Depends(get_db), admin = Depends(get_current_admin)):
-    return db.query(Orders).all()
+    return db.query(Orders).order_by(Orders.created_at.desc()).all()
 
 @router.get("/order/{id}")
-def get_id_order(id: int, db:Session = Depends(get_db),admin = Depends(get_current_admin)):
+def get_id_order(id: int, db: Session = Depends(get_db), admin = Depends(get_current_admin)):
     db_order = db.query(Orders).filter(Orders.id == id).first()
 
     if not db_order:
@@ -46,9 +46,25 @@ def update_order(id: int, order: OrderSchema, db: Session = Depends(get_db), adm
             detail="Заказ не найден"
         )
 
-    db_order.watch=order.watch
-    db_order.customer=order.customer
-    db_order.price=order.price
+    db_order.watch = order.watch
+    db_order.customer = order.customer
+    db_order.price = order.price
+
+    db.commit()
+    db.refresh(db_order)
+    return db_order
+
+@router.patch("/order/{id}/status")
+def update_order_status(id: int, data: OrderStatusUpdate, db: Session = Depends(get_db), admin = Depends(get_current_admin)):
+    db_order = db.query(Orders).filter(Orders.id == id).first()
+
+    if not db_order:
+        raise HTTPException(
+            status_code=404,
+            detail="Заказ не найден"
+        )
+
+    db_order.status = data.status
 
     db.commit()
     db.refresh(db_order)
@@ -66,7 +82,6 @@ def delete_order(id: int, db: Session = Depends(get_db), admin = Depends(get_cur
 
     db.delete(db_order)
     db.commit()
-
 
     return {
         "message": "Заказ удален"

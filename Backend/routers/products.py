@@ -4,6 +4,10 @@ from models import Products
 from dependencies import get_db, get_current_admin
 from schemas import ProductSchema
 
+def serialize_product(product):
+    product.images = product.images.split(",") if product.images else []
+    return product
+
 router = APIRouter()
 
 @router.post("/product")
@@ -20,7 +24,7 @@ def create_product(product: ProductSchema, db: Session = Depends(get_db), admin 
         strap_material=product.strap_material,
         description=product.description,
         image=product.image,
-        images=product.images,
+        images=",".join(product.images) if product.images else "",
         in_stock=product.in_stock,
         stock_left=product.stock_left,
         video=product.video
@@ -30,14 +34,16 @@ def create_product(product: ProductSchema, db: Session = Depends(get_db), admin 
     db.commit()
     db.refresh(db_product)
 
-    return db_product
+    return serialize_product(db_product)
 
 
 @router.get("/product")
-def get_products(max_price: int = None ,db: Session = Depends(get_db)):
+def get_products(max_price: int = None, db: Session = Depends(get_db)):
     if max_price is not None:
-        return db.query(Products).filter(Products.price <= max_price).all()
-    return db.query(Products).all()
+        products = db.query(Products).filter(Products.price <= max_price).all()
+    else:
+        products = db.query(Products).all()
+    return [serialize_product(p) for p in products]
 
 @router.get("/product/{id}")
 def get_id_product(id: int, db: Session = Depends(get_db)):
@@ -49,7 +55,7 @@ def get_id_product(id: int, db: Session = Depends(get_db)):
             detail="Товар не найден"
         )
 
-    return db_products
+    return serialize_product(db_products)
 
 @router.put("/product/{id}")
 def update_product(id:int, product: ProductSchema, db: Session = Depends(get_db), admin = Depends(get_current_admin)):
@@ -72,14 +78,14 @@ def update_product(id:int, product: ProductSchema, db: Session = Depends(get_db)
     db_product.strap_material = product.strap_material
     db_product.description = product.description
     db_product.image = product.image
-    db_product.images = product.images
+    db_product.images = ",".join(product.images) if product.images else ""
     db_product.in_stock = product.in_stock
     db_product.stock_left = product.stock_left
     db_product.video = product.video
 
     db.commit()
     db.refresh(db_product)
-    return db_product
+    return serialize_product(db_product)
 
 @router.delete("/product/{id}")
 def delete_product(id: int, db: Session = Depends(get_db), admin = Depends(get_current_admin)):
