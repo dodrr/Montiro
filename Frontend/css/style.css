@@ -1298,6 +1298,7 @@ address { font-style: normal; }
   }
   .header__container {
     gap: 8px;
+    justify-content: space-between;
   }
   .header__logo-text {
     font-size: 0.95rem;
