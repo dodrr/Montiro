@@ -1290,18 +1290,25 @@ address { font-style: normal; }
   .header__nav { display: none; }
   .header__burger { display: flex; }
 
-  /* Компактный логотип и иконки в шапке, чтобы кнопка корзины
-     не вылезала за пределы экрана на узких телефонах */
+  /* Компактная шапка на узких экранах: меньше отступы контейнера,
+     меньше расстояние между блоками, компактный логотип и иконки —
+     чтобы иконка корзины полностью помещалась на экране */
+  .header .container {
+    padding-inline: 12px;
+  }
+  .header__container {
+    gap: 8px;
+  }
   .header__logo-text {
-    font-size: 1.1rem;
-    letter-spacing: 0.2em;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
   }
   .header__actions {
-    gap: 2px;
+    gap: 0;
   }
   .header__action-btn {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
   }
 
   .hero__watch-showcase { display: none; }
