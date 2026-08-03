@@ -1272,6 +1272,20 @@ address { font-style: normal; }
   .header__nav { display: none; }
   .header__burger { display: flex; }
 
+  /* Компактный логотип и иконки в шапке, чтобы кнопка корзины
+     не вылезала за пределы экрана на узких телефонах */
+  .header__logo-text {
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+  }
+  .header__actions {
+    gap: 2px;
+  }
+  .header__action-btn {
+    width: 36px;
+    height: 36px;
+  }
+
   .hero__watch-showcase { display: none; }
   .hero__content { max-width: 100%; padding-block: 60px 100px; }
   .hero__stats { gap: 20px; }
