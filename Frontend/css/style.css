@@ -1130,6 +1130,21 @@ address { font-style: normal; }
 }
 .confirm-modal__actions .btn { flex: 1; }
 
+/* Две кнопки контактов (Telegram / WhatsApp) — друг под другом,
+   чтобы текст никогда не обрезался на узких экранах */
+.confirm-modal__actions--split {
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+.confirm-modal__contact-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%;
+}
+.confirm-modal__contact-btn--whatsapp:hover {
+  border-color: #25D366; color: #25D366;
+}
+.confirm-modal__cancel-full { width: 100%; }
+
 /* ── CART & FAVORITES DRAWER ─────────────────────────────── */
 .cart-drawer {
   position: fixed; top: 0; right: 0; bottom: 0;
@@ -1267,16 +1282,21 @@ address { font-style: normal; }
   background: rgba(10,10,10,0.92);
   backdrop-filter: blur(16px);
   border-top: 1px solid var(--gray-dark);
+  gap: 10px;
 }
 .sticky-telegram__btn {
   display: flex; align-items: center; justify-content: center; gap: 10px;
-  width: 100%;
+  flex: 1;
   background: var(--gold);
   color: var(--black);
   padding: 14px;
   border-radius: 4px;
   font-size: 0.85rem; font-weight: 600;
   letter-spacing: 0.05em; text-transform: uppercase;
+}
+.sticky-telegram__btn--whatsapp {
+  background: #25D366;
+  color: #0A0A0A;
 }
 
 /* ── RESPONSIVE ──────────────────────────────────────────── */
@@ -1340,7 +1360,7 @@ address { font-style: normal; }
   .notification { max-width: 100%; }
 
   /* Показываем sticky-бар только на мобильных */
-  .sticky-telegram { display: block; }
+  .sticky-telegram { display: flex; }
   .cart-drawer__footer { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
 
   /* Кнопка "быстрый просмотр" на touch-устройствах видна всегда */
