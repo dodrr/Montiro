@@ -7,6 +7,7 @@
   'use strict';
 
   const API_URL = 'https://montiro.onrender.com';
+  const WHATSAPP_NUMBER = '77761399741'; // без + и без пробелов
 
   /* ── DEFAULT PRODUCTS (fallback если backend недоступен) ── */
   const DEFAULT_PRODUCTS = [
@@ -618,8 +619,7 @@
         return `• ${p.brand} ${p.name}${qtyStr}${priceStr}`;
       }).filter(Boolean);
       const text = `Здравствуйте! Хочу купить:\n\n${lines.join('\n')}\n\nПодскажите детали и как оплатить?`;
-      const url  = `https://t.me/montiro_watches?text=${encodeURIComponent(text)}`;
-      askTelegramConfirm(url);
+      askTelegramConfirm(text);
     });
   }
 
@@ -813,8 +813,7 @@
       saveOrder(p);
       const priceText = p.price ? `Цена: ${formatPrice(p)}` : 'Уточнить цену';
       const text = `Здравствуйте! Хочу купить:\n\n${p.brand} ${p.name} (${p.category})\n${priceText}\n\nПодскажите детали и как оплатить?`;
-      const url  = `https://t.me/montiro_watches?text=${encodeURIComponent(text)}`;
-      askTelegramConfirm(url);
+      askTelegramConfirm(text);
     });
   }
 
@@ -857,22 +856,32 @@
     setInterval(tick, 1000);
   }
 
-  /* ── TELEGRAM CONFIRM MODAL ────────────────────────────── */
-  let pendingTelegramUrl = null;
+  /* ── CONTACT CONFIRM MODAL (Telegram / WhatsApp) ───────── */
+  let pendingMessage = null;
 
-  function askTelegramConfirm(url) {
-    pendingTelegramUrl = url;
+  function askTelegramConfirm(text) {
+    pendingMessage = text;
     $('#confirmModal').removeAttribute('hidden');
   }
 
   function closeTelegramConfirm() {
     $('#confirmModal').setAttribute('hidden', '');
-    pendingTelegramUrl = null;
+    pendingMessage = null;
   }
 
   function initTelegramConfirm() {
-    $('#confirmModalOk').addEventListener('click', () => {
-      if (pendingTelegramUrl) window.open(pendingTelegramUrl, '_blank', 'noopener');
+    $('#confirmModalTelegram').addEventListener('click', () => {
+      if (pendingMessage) {
+        const url = `https://t.me/montiro_watches?text=${encodeURIComponent(pendingMessage)}`;
+        window.open(url, '_blank', 'noopener');
+      }
+      closeTelegramConfirm();
+    });
+    $('#confirmModalWhatsapp').addEventListener('click', () => {
+      if (pendingMessage) {
+        const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(pendingMessage)}`;
+        window.open(url, '_blank', 'noopener');
+      }
       closeTelegramConfirm();
     });
     $('#confirmModalCancel').addEventListener('click', closeTelegramConfirm);
