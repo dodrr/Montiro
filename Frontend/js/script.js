@@ -7,7 +7,7 @@
   'use strict';
 
   const API_URL = 'https://montiro.onrender.com';
-  const WHATSAPP_NUMBER = '77761399741'; // без + и без пробелов
+  const WHATSAPP_NUMBER = '77059126313'; // без + и без пробелов
 
   /* ── DEFAULT PRODUCTS (fallback если backend недоступен) ── */
   const DEFAULT_PRODUCTS = [
