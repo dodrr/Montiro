@@ -446,7 +446,9 @@
       const url    = editingProductId ? `${API_URL}/product/${editingProductId}` : `${API_URL}/product`;
       const method = editingProductId ? 'PUT' : 'POST';
 
-      await fetch(url, { method, headers: authHeaders(), body });
+      const res = await fetch(url, { method, headers: authHeaders(), body });
+      console.log(res.status);
+      console.log(await res.text());
       closeProductForm();
       loadProducts();
     });
