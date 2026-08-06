@@ -1364,7 +1364,7 @@ address { font-style: normal; }
   .cart-drawer__footer { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
 
   /* Кнопка "быстрый просмотр" на touch-устройствах видна всегда */
-  .product-card__quickview { opacity: 1; transform: translate(-50%, 0); }
+  .product-card__quickview { opacity: 1; transform: translate(-50%, 0); bottom: 56px; }
   .product-card__fav { opacity: 1; }
 }
 
