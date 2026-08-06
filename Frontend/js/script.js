@@ -806,6 +806,13 @@
       toggleFavorite(state.modalProductId);
     });
 
+    $('#modalShareBtn').addEventListener('click', () => {
+      if (state.modalProductId == null) return;
+      const p = getProduct(state.modalProductId);
+      if (!p) return;
+      shareProduct(p);
+    });
+
     $('#modalBuyBtn').addEventListener('click', () => {
       if (state.modalProductId == null) return;
       const p = getProduct(state.modalProductId);
@@ -891,6 +898,49 @@
     });
   }
 
+  /* ── SHARE PRODUCT ─────────────────────────────────────── */
+  function getProductShareUrl(p) {
+    const url = new URL(window.location.href);
+    url.search = '';
+    url.hash = '';
+    url.searchParams.set('product', p.id);
+    return url.toString();
+  }
+
+  async function shareProduct(p) {
+    const shareUrl = getProductShareUrl(p);
+    const shareData = {
+      title: `${p.brand} ${p.name}`,
+      text: `Посмотри: ${p.brand} ${p.name} в Montiro`,
+      url: shareUrl
+    };
+    /* На телефонах — системное окно "Поделиться" (в Telegram, WhatsApp, куда угодно) */
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (e) {
+        /* пользователь просто закрыл окно шеринга — ничего не делаем */
+      }
+      return;
+    }
+    /* На компьютере — копируем ссылку в буфер обмена */
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      notify('Ссылка на товар скопирована');
+    } catch (e) {
+      notify('Не удалось скопировать ссылку');
+    }
+  }
+
+  /* Проверяем, не открыт ли сайт по прямой ссылке на конкретный товар */
+  function openProductFromUrlIfPresent() {
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('product');
+    if (productId && getProduct(Number(productId))) {
+      openModal(Number(productId));
+    }
+  }
+
   /* ── LOAD PRODUCTS FROM API ────────────────────────────── */
   async function loadProductsFromAPI() {
     try {
@@ -923,6 +973,9 @@
     renderFavorites();
     updateCartBadge();
     updateFavoritesBadge();
+
+    /* Если пришли по прямой ссылке на товар — открываем его модалку */
+    openProductFromUrlIfPresent();
   }
 
   /* ── INIT ──────────────────────────────────────────────── */
