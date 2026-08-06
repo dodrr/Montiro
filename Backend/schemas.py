@@ -1,4 +1,5 @@
 from pydantic import BaseModel 
+from typing import Optional
 
 
 class ProductSchema(BaseModel):
@@ -15,7 +16,7 @@ class ProductSchema(BaseModel):
     image: str
     images: list[str] = None
     in_stock: bool
-    stock_left: int = None
+    stock_left: Optional[int] = None
     video: str = None
 
 class OrderSchema(BaseModel):
