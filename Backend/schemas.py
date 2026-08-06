@@ -14,10 +14,10 @@ class ProductSchema(BaseModel):
     strap_material: str
     description: str
     image: str
-    images: list[str] = None
+    images: Optional[list[str]] = None
     in_stock: bool
     stock_left: Optional[int] = None
-    video: str = None
+    video: Optional[str] = None
 
 class OrderSchema(BaseModel):
     watch:str 
