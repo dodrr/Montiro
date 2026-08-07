@@ -23,6 +23,7 @@ class OrderSchema(BaseModel):
     watch:str 
     customer:str 
     price:int
+    product_id = Optional[int] = None
 
 class OrderStatusUpdate(BaseModel):
     status: str

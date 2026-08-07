@@ -651,6 +651,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          product_id: product.id,
           watch:    `${product.brand} ${product.name}`,
           customer: 'Покупатель',
           price:    product.price || 0

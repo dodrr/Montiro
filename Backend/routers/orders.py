@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from models import Orders
+from models import Orders, Products
 from dependencies import get_current_admin, get_db
 from schemas import OrderSchema, OrderStatusUpdate
 
@@ -8,10 +8,19 @@ router = APIRouter()
 
 @router.post("/order")
 def create_order(order: OrderSchema, db: Session = Depends(get_db)):
+
+    real_price = order.price
+
+    if order.product_id is not None:
+        db_product = db.query(Products).filter(Products.id == order.product_id).first()
+        if not db_product:
+            raise HTTPException(status_code=404, detail="Товар не найден")
+        real_price = db_product.price
+
     db_order = Orders(
         watch=order.watch,
         customer=order.customer,
-        price=order.price
+        price=real_price
     )
 
     db.add(db_order)
